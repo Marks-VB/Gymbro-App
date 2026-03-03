@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -13,15 +13,15 @@
             font-family: 'Bebas Neue', sans-serif;
             background-color: #000; /* Fundo preto base */
             
-            /* Aqui está a magia: um gradiente escuro semi-transparente por cima da tua foto exata */
-            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('1772579562476.png');
+            /* Aqui está a alteração: a procurar o ficheiro fundo.png com a leve transparência escura */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('fundo.png');
             
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             
             color: white;
-            overflow: hidden; /* Impede que a tela role quando o botão fugir */
+            overflow: hidden; /* Impede que o ecrã role quando o botão fugir */
             touch-action: manipulation; 
         }
 
@@ -33,7 +33,7 @@
             box-shadow: 0 0 50px rgba(132, 204, 22, 0.3);
         }
 
-        /* Transição suave pro botão fujão */
+        /* Transição suave para o botão fujão */
         #btn-nao {
             transition: top 0.15s ease-out, left 0.15s ease-out;
             z-index: 50;
@@ -42,7 +42,7 @@
 </head>
 <body class="relative min-h-screen flex items-center justify-center p-4">
 
-    <!-- Container Principal -->
+    <!-- Contentor Principal -->
     <div id="main-card" class="glass-card relative z-10 w-full max-w-md p-8 rounded-2xl flex flex-col items-center text-center gap-8">
         
         <div class="space-y-2">
@@ -77,7 +77,7 @@
             const btnWidth = btnNao.offsetWidth;
             const btnHeight = btnNao.offsetHeight;
             
-            // Margem para não sair da tela
+            // Margem para não sair do ecrã
             const margem = 20;
             const randomX = Math.max(margem, Math.floor(Math.random() * (windowWidth - btnWidth - margem)));
             const randomY = Math.max(margem, Math.floor(Math.random() * (windowHeight - btnHeight - margem)));
@@ -90,7 +90,7 @@
             btnNao.classList.remove('w-full', 'sm:w-auto');
         }
 
-        // Eventos para o botão fugir (mouse e touch)
+        // Eventos para o botão fugir (rato e toque)
         btnNao.addEventListener('mouseover', moverBotao);
         btnNao.addEventListener('touchstart', moverBotao, { passive: false });
         btnNao.addEventListener('click', moverBotao); 
@@ -103,7 +103,7 @@
                     BORA MUTANTE! 🚀
                 </h1>
                 <p class="text-2xl text-white mt-6 font-sans font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,1)] bg-black/60 p-6 rounded-xl border border-lime-500/50">
-                    O PRÉ-TREINO JÁ BATEU, A MENTE TÁ BLINDADA E AS GÓTICAS ESTÃO OLHANDO! 
+                    O PRÉ-TREINO JÁ BATEU, A MENTE TÁ BLINDADA E AS GÓTICAS ESTÃO A OLHAR! 
                     <br><br>
                     AMASSA OS PESOS! 🏋️‍♂️
                 </p>
@@ -112,3 +112,5 @@
     </script>
 </body>
 </html>
+
+
