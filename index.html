@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -11,59 +11,29 @@
     <style>
         body {
             font-family: 'Bebas Neue', sans-serif;
-            background-color: rgba(10, 10, 10, 0.85);
+            background-color: #000; /* Fundo preto base */
             
-            /* ========================================================
-               ⚠️ ATENÇÃO MUTANTE: LÊ ISTO AQUI! ⚠️
-               Para o Canvas funcionar, usei este link da internet: */
-            background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop');
-            
-            /* QUANDO FORES USAR NO TEU COMPUTADOR, APAGA A LINHA ACIMA 
-               E TIRA OS BARRAS (/*) DA LINHA ABAIXO PARA USAR A TUA FOTO: */
-            /* background-image: url('1772579562476.png'); */
-            /* ======================================================== */
+            /* Aqui está a magia: um gradiente escuro semi-transparente por cima da tua foto exata */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('1772579562476.png');
             
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            background-blend-mode: overlay; 
             
             color: white;
-            overflow: hidden; 
+            overflow: hidden; /* Impede que a tela role quando o botão fugir */
             touch-action: manipulation; 
         }
 
-        .bg-texto {
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            z-index: -1;
-            display: flex;
-            flex-wrap: wrap;
-            align-content: flex-start;
-            opacity: 0.20;
-            color: #84cc16; 
-            font-size: 2.5rem;
-            line-height: 1.1;
-            user-select: none;
-            pointer-events: none;
-            transform: rotate(-15deg);
-        }
-
-        .gotica {
-            color: #c026d3; 
-            text-shadow: 0 0 10px #c026d3;
-        }
-
+        /* Efeito de vidro no cartão central para dar destaque */
         .glass-card {
-            background: rgba(15, 15, 15, 0.85);
-            backdrop-filter: blur(12px);
+            background: rgba(15, 15, 15, 0.6);
+            backdrop-filter: blur(10px);
             border: 2px solid #84cc16;
-            box-shadow: 0 0 50px rgba(132, 204, 22, 0.4);
+            box-shadow: 0 0 50px rgba(132, 204, 22, 0.3);
         }
 
+        /* Transição suave pro botão fujão */
         #btn-nao {
             transition: top 0.15s ease-out, left 0.15s ease-out;
             z-index: 50;
@@ -72,15 +42,12 @@
 </head>
 <body class="relative min-h-screen flex items-center justify-center p-4">
 
-    <!-- Texto Maromba de Fundo -->
-    <div class="bg-texto" id="fundo-palavras"></div>
-
-    <!-- Contentor Principal -->
+    <!-- Container Principal -->
     <div id="main-card" class="glass-card relative z-10 w-full max-w-md p-8 rounded-2xl flex flex-col items-center text-center gap-8">
         
         <div class="space-y-2">
             <h2 class="text-lime-500 text-2xl tracking-widest uppercase drop-shadow-md">Protocolo de Amanhã</h2>
-            <h1 class="text-5xl md:text-6xl drop-shadow-[0_5px_5px_rgba(0,0,0,1)]">
+            <h1 class="text-5xl md:text-6xl drop-shadow-[0_5px_5px_rgba(0,0,0,1)] text-white">
                 VAI TREINAR SUPERIORES MEU NOBRE? 🦍
             </h1>
         </div>
@@ -99,18 +66,18 @@
     </div>
 
     <script>
-        const fundo = document.getElementById('fundo-palavras');
-        const palavrasBase = "TREMBOLONA 💉 MONSTER GELADINHO ⚡ DECA 🦍 <span class='gotica'>GÓTICAS</span> 🖤 ";
-        fundo.innerHTML = palavrasBase.repeat(150);
-
         const btnNao = document.getElementById('btn-nao');
 
+        // Função para fazer o botão "NÃO" fugir
         function moverBotao(e) {
             if(e) e.preventDefault();
+            
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
             const btnWidth = btnNao.offsetWidth;
             const btnHeight = btnNao.offsetHeight;
+            
+            // Margem para não sair da tela
             const margem = 20;
             const randomX = Math.max(margem, Math.floor(Math.random() * (windowWidth - btnWidth - margem)));
             const randomY = Math.max(margem, Math.floor(Math.random() * (windowHeight - btnHeight - margem)));
@@ -118,26 +85,29 @@
             btnNao.style.position = 'fixed';
             btnNao.style.left = randomX + 'px';
             btnNao.style.top = randomY + 'px';
+            
+            // Remove as classes de largura do mobile para ele ficar quadrado
             btnNao.classList.remove('w-full', 'sm:w-auto');
         }
 
+        // Eventos para o botão fugir (mouse e touch)
         btnNao.addEventListener('mouseover', moverBotao);
         btnNao.addEventListener('touchstart', moverBotao, { passive: false });
         btnNao.addEventListener('click', moverBotao); 
 
+        // Função de sucesso ao clicar no "SIM"
         function aceitarTreino() {
             const card = document.getElementById('main-card');
             card.innerHTML = `
                 <h1 class="text-6xl text-lime-500 drop-shadow-[0_0_30px_rgba(132,204,22,1)] animate-pulse">
                     BORA MUTANTE! 🚀
                 </h1>
-                <p class="text-2xl text-white mt-6 font-sans font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,1)] bg-black/70 p-6 rounded-xl border border-lime-500/50">
-                    O PRÉ-TREINO JÁ BATEU, A MENTE TÁ BLINDADA E AS GÓTICAS ESTÃO A VER! 
+                <p class="text-2xl text-white mt-6 font-sans font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,1)] bg-black/60 p-6 rounded-xl border border-lime-500/50">
+                    O PRÉ-TREINO JÁ BATEU, A MENTE TÁ BLINDADA E AS GÓTICAS ESTÃO OLHANDO! 
                     <br><br>
                     AMASSA OS PESOS! 🏋️‍♂️
                 </p>
             `;
-            document.getElementById('fundo-palavras').style.opacity = '0.05';
         }
     </script>
 </body>
