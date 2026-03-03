@@ -1,35 +1,42 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GymBro - Treino de Superiores</title>
     <!-- Tailwind CSS para estilização rápida e responsiva -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Fonte com pegada maromba -->
+    <!-- Fonte com impacto -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     
     <style>
         body {
             font-family: 'Bebas Neue', sans-serif;
-            background-color: #050505;
+            /* Definições da imagem de fundo */
+            background-color: rgba(15, 15, 15, 0.85); /* Escurece a imagem para dar contraste ao texto */
+            background-image: url('1772579562476.png'); /* O nome exato da tua imagem */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-blend-mode: overlay; /* Mistura a cor escura com a imagem */
+            
             color: white;
-            overflow: hidden; /* Impede a rolagem quando o botão fugir */
-            touch-action: manipulation; /* Melhora o comportamento de toque no mobile */
+            overflow: hidden; /* Impede a rolagem do ecrã quando o botão fugir */
+            touch-action: manipulation; /* Melhora o comportamento de toque no telemóvel */
         }
 
-        /* Animação do fundo estilo "Matrix Maromba" */
+        /* Animação do fundo com as palavras a repetir */
         .bg-texto {
             position: fixed;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            z-index: 0;
+            z-index: -1;
             display: flex;
             flex-wrap: wrap;
             align-content: flex-start;
-            opacity: 0.12;
+            opacity: 0.15; /* Subtil para não ofuscar a imagem fantástica */
             color: #84cc16; /* Verde Monster */
             font-size: 2.5rem;
             line-height: 1.1;
@@ -38,20 +45,21 @@
             transform: rotate(-15deg);
         }
 
-        /* Destaque para a palavra góticas */
+        /* Destaque para a palavra góticas no texto de fundo */
         .gotica {
             color: #c026d3; /* Rosa/Roxo gótico */
             text-shadow: 0 0 10px #c026d3;
         }
 
+        /* Cartão de vidro (Glassmorphism) para destacar os botões */
         .glass-card {
-            background: rgba(15, 15, 15, 0.9);
-            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(8px);
             border: 2px solid #84cc16;
-            box-shadow: 0 0 30px rgba(132, 204, 22, 0.2);
+            box-shadow: 0 0 40px rgba(132, 204, 22, 0.3);
         }
 
-        /* Transição suave para o botão fugindo */
+        /* Transição suave para o botão fugir */
         #btn-nao {
             transition: top 0.2s ease-out, left 0.2s ease-out;
             z-index: 50;
@@ -60,29 +68,29 @@
 </head>
 <body class="relative min-h-screen flex items-center justify-center p-4">
 
-    <!-- Fundo de palavras -->
+    <!-- Fundo de palavras (continua lá, mas subtil) -->
     <div class="bg-texto" id="fundo-palavras"></div>
 
-    <!-- Container Principal (Mobile First: w-full, p-6. Telas maiores: max-w-lg) -->
+    <!-- Contentor Principal -->
     <div id="main-card" class="glass-card relative z-10 w-full max-w-md p-8 rounded-2xl flex flex-col items-center text-center gap-8">
         
         <div class="space-y-2">
-            <h2 class="text-lime-500 text-2xl tracking-widest uppercase">Protocolo de Amanhã</h2>
-            <h1 class="text-5xl md:text-6xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+            <h2 class="text-lime-500 text-2xl tracking-widest uppercase text-shadow">Protocolo de Amanhã</h2>
+            <h1 class="text-5xl md:text-6xl drop-shadow-[0_4px_4px_rgba(0,0,0,1)]">
                 VAI TREINAR SUPERIORES MEU NOBRE? 🦍
             </h1>
         </div>
 
-        <!-- Botões (Mobile: flex-col, PC: flex-row) -->
-        <div class="flex flex-col sm:flex-row gap-4 w-full justify-center items-center mt-4">
+        <!-- Botões -->
+        <div class="flex flex-col sm:flex-row gap-4 w-full justify-center items-center mt-4 relative">
             
             <button id="btn-sim" onclick="aceitarTreino()" 
-                class="w-full sm:w-auto px-10 py-4 bg-lime-500 hover:bg-lime-400 text-black text-3xl rounded-xl transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(132,204,22,0.6)]">
+                class="w-full sm:w-auto px-10 py-4 bg-lime-500 hover:bg-lime-400 text-black text-3xl rounded-xl transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(132,204,22,0.8)]">
                 SIM, PAI! 💪
             </button>
 
             <button id="btn-nao" 
-                class="w-full sm:w-auto px-10 py-4 bg-red-600 text-white text-3xl rounded-xl shadow-[0_0_15px_rgba(220,38,38,0.6)] cursor-not-allowed">
+                class="w-full sm:w-auto px-10 py-4 bg-red-600 text-white text-3xl rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.8)] cursor-not-allowed">
                 NÃO 🤡
             </button>
 
@@ -94,58 +102,59 @@
         const fundo = document.getElementById('fundo-palavras');
         const palavrasBase = "TREMBOLONA 💉 MONSTER GELADINHO ⚡ DECA 🦍 <span class='gotica'>GÓTICAS</span> 🖤 ";
         
-        // Repete as palavras para cobrir a tela inteira (mesmo com a rotação)
-        fundo.innerHTML = palavrasBase.repeat(200);
+        // Repete as palavras para cobrir o ecrã
+        fundo.innerHTML = palavrasBase.repeat(150);
 
-        // 2. Lógica do botão fujão
+        // 2. Lógica do botão que foge
         const btnNao = document.getElementById('btn-nao');
 
-        // Função para mover o botão para um lugar aleatório
         function moverBotao(e) {
-            // Previne o comportamento padrão (útil no touch para não dar "click" acidental)
+            // Previne o clique (especialmente importante no telemóvel)
             if(e) e.preventDefault();
 
-            // Pega as dimensões da janela e do botão
             const windowWidth = window.innerWidth;
             const windowHeight = window.innerHeight;
             const btnWidth = btnNao.offsetWidth;
             const btnHeight = btnNao.offsetHeight;
 
-            // Calcula uma nova posição garantindo que não saia da tela
-            // Adiciona uma margem de segurança de 20px
+            // Calcula nova posição com margem de segurança
             const margem = 20;
             const randomX = Math.max(margem, Math.floor(Math.random() * (windowWidth - btnWidth - margem)));
             const randomY = Math.max(margem, Math.floor(Math.random() * (windowHeight - btnHeight - margem)));
 
-            // Muda para fixed para flutuar sobre toda a interface
+            // Altera para 'fixed' para flutuar em todo o ecrã
             btnNao.style.position = 'fixed';
             btnNao.style.left = randomX + 'px';
             btnNao.style.top = randomY + 'px';
             
-            // Remove as classes de largura total do mobile para ele ficar do tamanho exato
+            // Remove as classes de largura total para o botão não ficar esticado a voar
             btnNao.classList.remove('w-full', 'sm:w-auto');
         }
 
-        // Adiciona os eventos (mouseover para PC, touchstart para Mobile)
+        // Eventos para Desktop (rato) e Mobile (toque)
         btnNao.addEventListener('mouseover', moverBotao);
         btnNao.addEventListener('touchstart', moverBotao, { passive: false });
-        // Se por algum milagre o cara conseguir clicar (ex: usando tab e enter), ele foge também
         btnNao.addEventListener('click', moverBotao); 
 
         // 3. Ação de vitória (Botão SIM)
         function aceitarTreino() {
             const card = document.getElementById('main-card');
             card.innerHTML = `
-                <h1 class="text-6xl text-lime-500 drop-shadow-[0_0_20px_rgba(132,204,22,0.8)] animate-pulse">
+                <h1 class="text-6xl text-lime-500 drop-shadow-[0_0_20px_rgba(132,204,22,1)] animate-pulse">
                     BORA MUTANTE! 🚀
                 </h1>
-                <p class="text-2xl text-gray-300 mt-4 font-sans font-bold">
-                    O PRÉ-TREINO TÁ BATENDO, A TREMBOLONA TÁ NA MENTE E AS GÓTICAS TÃO OLHANDO! 
+                <p class="text-2xl text-white mt-6 font-sans font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] bg-black/50 p-4 rounded-xl">
+                    O PRÉ-TREINO JÁ BATEU, A MENTE TÁ BLINDADA E AS GÓTICAS ESTÃO A VER! 
                     <br><br>
                     AMASSA OS PESOS! 🏋️‍♂️
                 </p>
             `;
+            
+            // Opcional: Remover as palavras de fundo para focar na imagem após aceitar
+            document.getElementById('fundo-palavras').style.opacity = '0.05';
         }
     </script>
 </body>
 </html>
+
+
