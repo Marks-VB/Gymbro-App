@@ -8,19 +8,19 @@
     <!-- SEO & META TAGS -->
     <!-- ========================================== -->
     <title>GymBro - Treinar Hoje? 🦍</title>
-    <meta name="description" content="Vai treinar hoje, meu nobre? O pré-treino já bateu. Escolhe aí, superiores ou inferiores? (Aviso: o sistema é viciado em braço!) 💪">
-    <meta name="keywords" content="gymbro, treino, maromba, superiores, musculação, motivação, pré-treino, monster, shape, góticas">
+    <meta name="description" content="Vai treinar hoje, meu nobre? O pré-treino já bateu, o Monster branco tá trincando e as góticas tão te esperando. Escolhe aí! 💪">
+    <meta name="keywords" content="gymbro, treino, maromba, superiores, musculação, motivação, pré-treino, monster branco, shape, góticas">
     <meta name="author" content="Mutante">
     <meta name="theme-color" content="#84cc16">
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="GymBro - Vai treinar hoje, meu nobre? 🦍">
-    <meta property="og:description" content="A mente tá blindada e a bebida monstruosa gaseificada geladinha já bateu. Vem escolher o treino de hoje!">
+    <meta property="og:description" content="A mente tá blindada, o Monster branco tá trincando e as góticas tão esperando. Vem escolher o treino de hoje!">
     <meta property="og:image" content="fundo.png">
     
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="GymBro - Vai treinar hoje, meu nobre? 🦍">
-    <meta name="twitter:description" content="A mente tá blindada e a bebida monstruosa gaseificada geladinha já bateu. Vem escolher o treino de hoje!">
+    <meta name="twitter:description" content="A mente tá blindada, o Monster branco tá trincando e as góticas tão esperando. Vem escolher o treino de hoje!">
     <meta name="twitter:image" content="fundo.png">
     <!-- ========================================== -->
 
@@ -32,9 +32,11 @@
         body {
             font-family: 'Bebas Neue', sans-serif;
             background-color: #000; 
-            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('fundo.png');
+            
+            /* Fundo escurecido. A MÁGICA ESTÁ AQUI: background-position: top center */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)), url('fundo.png');
             background-size: cover;
-            background-position: center;
+            background-position: top center; /* Garante que corta embaixo e foca no topo (rostos e Monster) */
             background-attachment: fixed;
             color: white;
             overflow: hidden; 
@@ -42,10 +44,10 @@
         }
 
         .glass-card {
-            background: rgba(15, 15, 15, 0.6);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 15, 15, 0.70);
+            backdrop-filter: blur(8px);
             border: 2px solid #84cc16;
-            box-shadow: 0 0 50px rgba(132, 204, 22, 0.3);
+            box-shadow: 0 0 50px rgba(132, 204, 22, 0.4);
         }
 
         #btn-nao {
@@ -54,28 +56,29 @@
         }
     </style>
 </head>
-<body class="relative min-h-screen flex items-center justify-center p-4">
+<!-- MÁGICA 2: flex-col, justify-end e pb-32 empurram a caixa para o fundo da tela -->
+<body class="relative min-h-[100dvh] flex flex-col items-center justify-end pb-32 px-4 pt-10">
 
     <!-- Contentor Principal -->
-    <div id="main-card" class="glass-card relative z-10 w-full max-w-lg p-8 rounded-2xl flex flex-col items-center text-center gap-8">
+    <div id="main-card" class="glass-card relative z-10 w-full max-w-lg p-6 sm:p-8 rounded-2xl flex flex-col items-center text-center gap-6">
         
         <!-- Tela Inicial: Vai treinar hoje? -->
-        <div class="space-y-2">
-            <h2 class="text-lime-500 text-2xl tracking-widest uppercase drop-shadow-md">Protocolo de Hoje</h2>
-            <h1 class="text-5xl md:text-6xl drop-shadow-[0_5px_5px_rgba(0,0,0,1)] text-white">
+        <div class="space-y-1">
+            <h2 class="text-lime-500 text-xl sm:text-2xl tracking-widest uppercase drop-shadow-md">Protocolo de Hoje</h2>
+            <h1 class="text-4xl sm:text-5xl md:text-6xl drop-shadow-[0_5px_5px_rgba(0,0,0,1)] text-white">
                 VAI TREINAR HOJE MEU NOBRE? 🦍
             </h1>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-4 w-full justify-center items-center mt-4 relative">
+        <div class="flex flex-col sm:flex-row gap-3 w-full justify-center items-center mt-2 relative">
             <button id="btn-sim" onclick="perguntarTreino()" 
-                class="w-full sm:w-auto px-10 py-4 bg-lime-500 hover:bg-lime-400 text-black text-3xl rounded-xl transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(132,204,22,0.8)]">
+                class="w-full sm:w-auto px-8 py-3 bg-lime-500 hover:bg-lime-400 text-black text-2xl sm:text-3xl rounded-xl transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(132,204,22,0.8)]">
                 SIM, PAI! 💪
             </button>
 
             <!-- Se ele for ninja e conseguir clicar no NÃO, a função forcarTreino ativa -->
             <button id="btn-nao" onclick="forcarTreino()"
-                class="w-full sm:w-auto px-10 py-4 bg-red-600 text-white text-3xl rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.8)] cursor-not-allowed">
+                class="w-full sm:w-auto px-8 py-3 bg-red-600 text-white text-2xl sm:text-3xl rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.8)] cursor-not-allowed">
                 NÃO 🤡
             </button>
         </div>
@@ -83,8 +86,8 @@
 
     <!-- Menção Honrosa no Rodapé -->
     <div class="absolute bottom-6 w-full text-center px-4 pointer-events-none">
-        <p class="text-lime-400 text-xl tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,1)] opacity-80 animate-pulse">
-            ⚡ Movido a ódio e àquela bebida monstruosa gaseificada geladinha ⚡
+        <p class="text-lime-400 text-lg sm:text-xl tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,1)] opacity-90 animate-pulse">
+            ⚡ Movido a ódio e àquele Monster branco trincando de gelado ⚡
         </p>
     </div>
 
@@ -101,9 +104,12 @@
             const btnWidth = btnNao.offsetWidth;
             const btnHeight = btnNao.offsetHeight;
             
+            // Limitadores para o botão não sumir da tela nem cobrir o rodapé
             const margem = 20;
+            const rodapeSpace = 80; 
+            
             const randomX = Math.max(margem, Math.floor(Math.random() * (windowWidth - btnWidth - margem)));
-            const randomY = Math.max(margem, Math.floor(Math.random() * (windowHeight - btnHeight - margem)));
+            const randomY = Math.max(margem, Math.floor(Math.random() * (windowHeight - btnHeight - margem - rodapeSpace)));
 
             btnNao.style.position = 'fixed';
             btnNao.style.left = randomX + 'px';
@@ -119,17 +125,17 @@
         function perguntarTreino() {
             const card = document.getElementById('main-card');
             card.innerHTML = `
-                <div class="space-y-2 animate-fade-in">
-                    <h2 class="text-lime-500 text-2xl tracking-widest uppercase drop-shadow-md">Aí Sim, Mutante!</h2>
-                    <h1 class="text-5xl md:text-5xl drop-shadow-[0_5px_5px_rgba(0,0,0,1)] text-white">
+                <div class="space-y-1 animate-fade-in">
+                    <h2 class="text-lime-500 text-xl sm:text-2xl tracking-widest uppercase drop-shadow-md">Aí Sim, Mutante!</h2>
+                    <h1 class="text-4xl sm:text-5xl drop-shadow-[0_5px_5px_rgba(0,0,0,1)] text-white">
                         QUAL VAI SER O AMASSO DE HOJE? 🦍
                     </h1>
                 </div>
-                <div class="flex flex-col sm:flex-row gap-4 w-full justify-center items-center mt-6">
-                    <button onclick="confirmarBiceps('superiores')" class="w-full px-8 py-4 bg-lime-500 hover:bg-lime-400 text-black text-3xl rounded-xl transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(132,204,22,0.8)]">
+                <div class="flex flex-col sm:flex-row gap-3 w-full justify-center items-center mt-4">
+                    <button onclick="confirmarBiceps('superiores')" class="w-full px-6 py-3 bg-lime-500 hover:bg-lime-400 text-black text-2xl sm:text-3xl rounded-xl transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(132,204,22,0.8)]">
                         SUPERIORES 💪
                     </button>
-                    <button onclick="confirmarBiceps('inferiores')" class="w-full px-8 py-4 bg-purple-600 hover:bg-purple-500 text-white text-3xl rounded-xl transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(147,51,234,0.8)]">
+                    <button onclick="confirmarBiceps('inferiores')" class="w-full px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white text-2xl sm:text-3xl rounded-xl transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(147,51,234,0.8)]">
                         INFERIORES 🍗
                     </button>
                 </div>
@@ -146,12 +152,12 @@
             }
 
             card.innerHTML = `
-                <h1 class="text-5xl md:text-6xl text-lime-500 drop-shadow-[0_0_30px_rgba(132,204,22,1)] animate-pulse">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl text-lime-500 drop-shadow-[0_0_30px_rgba(132,204,22,1)] animate-pulse">
                     TREINO DE BÍCEPS E TRÍCEPS CONFIRMADO! 🚀
                 </h1>
-                <p class="text-xl md:text-2xl text-white mt-6 font-sans font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,1)] bg-black/60 p-6 rounded-xl border border-lime-500/50">
+                <p class="text-lg sm:text-xl md:text-2xl text-white mt-4 font-sans font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,1)] bg-black/70 p-4 sm:p-6 rounded-xl border border-lime-500/50">
                     ${mensagemIronica}
-                    A BEBIDA MONSTRUOSA GASEIFICADA GELADINHA JÁ BATEU E AS GÓTICAS ESTÃO A OLHAR! 
+                    O MONSTER BRANCO JÁ BATEU E AS GÓTICAS TÃO TE ESPERANDO LÁ NO BANCO DE SUPINO! 🖤⚡
                     <br><br>
                     VAI LÁ E AMASSA OS PESOS! 🏋️‍♂️
                 </p>
@@ -162,16 +168,20 @@
         function forcarTreino() {
             const card = document.getElementById('main-card');
             card.innerHTML = `
-                <h1 class="text-5xl md:text-6xl text-red-500 drop-shadow-[0_0_30px_rgba(220,38,38,1)] animate-pulse">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl text-red-500 drop-shadow-[0_0_30px_rgba(220,38,38,1)] animate-pulse">
                     OPÇÃO NEGADA! 🚫
                 </h1>
-                <p class="text-xl md:text-2xl text-white mt-6 font-sans font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,1)] bg-black/60 p-6 rounded-xl border border-red-500/50">
+                <p class="text-lg sm:text-xl md:text-2xl text-white mt-4 font-sans font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,1)] bg-black/70 p-4 sm:p-6 rounded-xl border border-red-500/50">
                     O SHAPE FALA MAIS ALTO QUE A TUA PREGUIÇA!
                     <br><br>
-                    TREINO DE BÍCEPS E TRÍCEPS CONFIRMADO COM SUCESSO! 🚀 A BEBIDA MONSTRUOSA JÁ TÁ NA MÃO, VAI AMASSAR! 💪
+                    TREINO DE BÍCEPS E TRÍCEPS CONFIRMADO COM SUCESSO! 🚀 
+                    <br><br>
+                    PEGA O MONSTER BRANCO E VAI, QUE AS GÓTICAS JÁ TÃO ESPERANDO! 🖤
                 </p>
             `;
         }
     </script>
 </body>
 </html>
+
+
