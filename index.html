@@ -1,187 +1,496 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <!-- ========================================== -->
-    <!-- SEO & META TAGS -->
-    <!-- ========================================== -->
-    <title>GymBro - Treinar Hoje? 🦍</title>
-    <meta name="description" content="Vai treinar hoje, meu nobre? O pré-treino já bateu, o Monster branco tá trincando e as góticas tão te esperando. Escolhe aí! 💪">
-    <meta name="keywords" content="gymbro, treino, maromba, superiores, musculação, motivação, pré-treino, monster branco, shape, góticas">
-    <meta name="author" content="Mutante">
-    <meta name="theme-color" content="#84cc16">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Roleta do Treino 🦍 | Decide o que tu vai arrasar hoje</title>
+  <meta name="description" content="A roleta mais honesta da academia. Gira e descobre o teu destino hoje." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="GymBro - Vai treinar hoje, meu nobre? 🦍">
-    <meta property="og:description" content="A mente tá blindada, o Monster branco tá trincando e as góticas tão esperando. Vem escolher o treino de hoje!">
-    <meta property="og:image" content="fundo.png">
-    
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="GymBro - Vai treinar hoje, meu nobre? 🦍">
-    <meta name="twitter:description" content="A mente tá blindada, o Monster branco tá trincando e as góticas tão esperando. Vem escolher o treino de hoje!">
-    <meta name="twitter:image" content="fundo.png">
-    <!-- ========================================== -->
+  <style>
+    :root {
+      --neon: #39ff14;
+      --neon-dim: #1aff0080;
+      --magenta: #d400ff;
+      --bg-dark: #050505;
+    }
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    
-    <style>
-        body {
-            font-family: 'Bebas Neue', sans-serif;
-            background-color: #000; 
-            
-            /* Fundo escurecido. A MÁGICA ESTÁ AQUI: background-position: top center */
-            background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)), url('fundo.png');
-            background-size: cover;
-            background-position: top center; /* Garante que corta embaixo e foca no topo (rostos e Monster) */
-            background-attachment: fixed;
-            color: white;
-            overflow: hidden; 
-            touch-action: manipulation; 
-        }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        .glass-card {
-            background: rgba(15, 15, 15, 0.70);
-            backdrop-filter: blur(8px);
-            border: 2px solid #84cc16;
-            box-shadow: 0 0 50px rgba(132, 204, 22, 0.4);
-        }
+    body {
+      font-family: 'Bebas Neue', sans-serif;
+      background-color: var(--bg-dark);
+      background-image:
+        linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.6) 100%),
+        url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-x: hidden;
+    }
 
-        #btn-nao {
-            transition: top 0.15s ease-out, left 0.15s ease-out;
-            z-index: 50;
-        }
-    </style>
+    /* ─── GLASSMORPHISM CARD ─── */
+    .glass-card {
+      background: rgba(5, 5, 5, 0.85);
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      border: 1px solid rgba(57, 255, 20, 0.3);
+      border-radius: 24px;
+      box-shadow:
+        0 0 40px rgba(57, 255, 20, 0.1),
+        0 0 100px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ─── NEON TEXT ─── */
+    .neon-text {
+      color: var(--neon);
+      text-shadow: 0 0 10px var(--neon), 0 0 20px rgba(57,255,20,0.4);
+    }
+    .magenta-text {
+      color: var(--magenta);
+      text-shadow: 0 0 10px var(--magenta);
+    }
+
+    /* ─── WHEEL CONTAINER ─── */
+    #wheel-wrap {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 20px auto;
+      flex-shrink: 0;
+    }
+
+    #wheel-canvas {
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 6px rgba(57,255,20,0.15),
+        0 0 30px rgba(57,255,20,0.25);
+      transition: transform 4.5s cubic-bezier(0.15, 0, 0.15, 1);
+      display: block;
+    }
+
+    /* Pointer */
+    #pointer {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 16px solid transparent;
+      border-right: 16px solid transparent;
+      border-top: 32px solid var(--neon);
+      filter: drop-shadow(0 0 10px var(--neon));
+      z-index: 20;
+    }
+
+    /* Center circle */
+    #center-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 52px;
+      height: 52px;
+      background: #000;
+      border: 3px solid var(--neon);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 0 20px var(--neon);
+      z-index: 10;
+    }
+
+    /* ─── SPIN BUTTON ─── */
+    #btn-spin {
+      background: linear-gradient(135deg, #39ff14 0%, #00cc10 100%);
+      color: #000;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 2px;
+      border: none;
+      border-radius: 16px;
+      padding: 16px 20px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s;
+      box-shadow: 0 0 25px rgba(57,255,20,0.4);
+      text-transform: uppercase;
+    }
+    #btn-spin:active { transform: scale(0.96); }
+    #btn-spin:disabled {
+      opacity: 0.5;
+      filter: grayscale(1);
+      cursor: not-allowed;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    .result-in { animation: resultIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+    @keyframes resultIn {
+      0% { transform: scale(0.8) translateY(20px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    #footer-pulse { animation: pulse 2s infinite; }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 0.3; }
+    }
+
+    /* SCANLINES */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      background-size: 100% 3px, 3px 100%;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    @media (max-height: 700px) {
+      #wheel-wrap { width: 240px; height: 240px; }
+      .glass-card { padding: 1.25rem !important; }
+    }
+  </style>
 </head>
-<!-- MÁGICA 2: flex-col, justify-end e pb-32 empurram a caixa para o fundo da tela -->
-<body class="relative min-h-[100dvh] flex flex-col items-center justify-end pb-32 px-4 pt-10">
+<body>
 
-    <!-- Contentor Principal -->
-    <div id="main-card" class="glass-card relative z-10 w-full max-w-lg p-6 sm:p-8 rounded-2xl flex flex-col items-center text-center gap-6">
+  <!-- BOTÃO INVISÍVEL (CANTO SUPERIOR ESQUERDO) -->
+  <button id="ghost-btn" onclick="toggleSecretPanel()" style="position:fixed;top:0;left:0;width:60px;height:60px;background:transparent;border:none;z-index:999;"></button>
+
+  <!-- PAINEL SECRETO -->
+  <div id="secret-panel" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); backdrop-filter:blur(10px); z-index:998; align-items:center; justify-content:center; padding:20px;">
+    <div class="glass-card p-8 w-full max-w-xs text-center border-magenta">
+      <p class="magenta-text text-xs tracking-widest mb-2">MODO ADMINISTRADOR</p>
+      <h2 class="text-white text-3xl mb-6">MANIPULAR DESTINO</h2>
+      
+      <div class="mb-4 text-left">
+        <label class="text-white/60 text-xs font-['Rajdhani'] block mb-1">1º TREINO</label>
+        <select id="cheat-first" class="w-full bg-black border border-white/20 rounded-lg p-3 text-neon font-['Bebas_Neue'] text-xl outline-none">
+          <option value="PEITO">PEITO</option>
+          <option value="COSTAS">COSTAS</option>
+          <option value="BICEPS">BÍCEPS</option>
+          <option value="TRICEPS">TRÍCEPS</option>
+          <option value="ABDOMEN">ABDÔMEN</option>
+          <option value="CARDIO">CARDIO</option>
+        </select>
+      </div>
+
+      <div class="mb-8 text-left">
+        <label class="text-white/60 text-xs font-['Rajdhani'] block mb-1">2º TREINO</label>
+        <select id="cheat-second" class="w-full bg-black border border-white/20 rounded-lg p-3 text-neon font-['Bebas_Neue'] text-xl outline-none">
+          <option value="TRICEPS">TRÍCEPS</option>
+          <option value="BICEPS">BÍCEPS</option>
+          <option value="PEITO">PEITO</option>
+          <option value="COSTAS">COSTAS</option>
+          <option value="ABDOMEN">ABDÔMEN</option>
+          <option value="CARDIO">CARDIO</option>
+        </select>
+      </div>
+
+      <div class="flex gap-3">
+        <button onclick="toggleSecretPanel()" class="flex-1 text-white/40 text-sm">CANCELAR</button>
+        <button onclick="applyCheat()" class="flex-2 bg-magenta text-white px-6 py-3 rounded-xl font-['Bebas_Neue'] tracking-widest">CONFIRMAR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <main class="glass-card w-full max-w-sm p-6 flex flex-col items-center">
+
+    <!-- ROULETTE SCREEN -->
+    <div id="screen-roulette" class="w-full">
+      <div class="text-center mb-4">
+        <h1 class="neon-text text-5xl tracking-tighter leading-none">ROLETA DO</h1>
+        <h2 class="text-white text-6xl tracking-widest leading-none">TREINO</h2>
+        <div class="flex items-center justify-center gap-2 mt-2">
+            <span class="h-px w-8 bg-white/20"></span>
+            <p class="magenta-text text-[10px] font-['Rajdhani'] tracking-[0.3em] uppercase">2 Giros • 1 Combo</p>
+            <span class="h-px w-8 bg-white/20"></span>
+        </div>
+      </div>
+
+      <!-- Badge 1º Treino -->
+      <div id="first-result-preview" class="hidden mb-4 animate-bounce" style="display:none">
+        <div class="bg-[#39ff14]/10 border border-[#39ff14]/40 rounded-2xl p-3 flex items-center justify-center gap-3">
+          <span class="text-white/50 text-xs font-['Rajdhani'] uppercase tracking-widest">1º:</span>
+          <span class="neon-text text-3xl" id="badge-first"></span>
+          <span class="text-white">🔥</span>
+        </div>
+      </div>
+
+      <!-- WHEEL -->
+      <div id="wheel-wrap">
+        <div id="pointer"></div>
+        <canvas id="wheel-canvas" width="300" height="300"></canvas>
+        <div id="center-circle">💪</div>
+      </div>
+
+      <!-- SPIN BUTTON -->
+      <button id="btn-spin" onclick="spinWheel()" class="mt-4">
+        ⚡ GIRAR A ROLETA ⚡
+      </button>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="screen-result" style="display:none" class="w-full">
+      <div class="text-center flex flex-col gap-6">
+        <p class="text-white/60 font-['Rajdhani'] tracking-[0.2em] text-sm uppercase">O destino foi selado:</p>
+
+        <div id="result-combo" class="flex flex-col items-center gap-3 opacity-0">
+          <div id="result-emoji" class="text-5xl"></div>
+          
+          <div class="flex items-center justify-center gap-2 flex-wrap">
+            <div class="bg-neon/10 border border-neon/40 px-5 py-3 rounded-2xl">
+              <span class="neon-text text-4xl" id="result-first"></span>
+            </div>
+            <span class="text-white/30 text-3xl">+</span>
+            <div class="bg-neon/10 border border-neon/40 px-5 py-3 rounded-2xl">
+              <span class="neon-text text-4xl" id="result-second"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-5 text-left">
+          <p id="result-msg" class="text-white/80 font-['Rajdhani'] text-sm leading-relaxed"></p>
+        </div>
+
+        <button onclick="resetGame()" class="border border-neon/40 text-neon py-4 rounded-2xl tracking-widest text-xl hover:bg-neon/10 active:scale-95 transition-all">
+          🔄 TENTAR A SORTE NOVAMENTE
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="mt-6 text-center">
+    <p id="footer-pulse" class="text-[#39ff14]/60 font-['Rajdhani'] text-[10px] tracking-[0.4em] uppercase">
+      ⚡ Treine como um animal ou morra como um frango ⚡
+    </p>
+  </footer>
+
+  <script>
+    // ─── WHEEL DATA (Focado nos 6 treinos reais para melhor distribuição) ───
+    const slices = [
+      { label: 'PEITO',       display: 'PEITO',      color: '#39ff14', textColor: '#000' },
+      { label: 'COSTAS',      display: 'COSTAS',     color: '#121212', textColor: '#39ff14' },
+      { label: 'BICEPS',      display: 'BÍCEPS',     color: '#39ff14', textColor: '#000' },
+      { label: 'TRICEPS',     display: 'TRÍCEPS',    color: '#121212', textColor: '#39ff14' },
+      { label: 'ABDOMEN',     display: 'ABDÔMEN',    color: '#39ff14', textColor: '#000' },
+      { label: 'CARDIO',      display: 'CARDIO',     color: '#121212', textColor: '#39ff14' },
+    ];
+
+    const combos = {
+      'PEITO+TRICEPS':   { emoji: '🏋️🔱', msg: 'A dupla clássica do supino! O tríceps já vai pré-fadigado e vai chorar de gratidão. Monster branco na entrada, veia saltando na saída.' },
+      'COSTAS+BICEPS':   { emoji: '🦅💪', msg: 'Puxada bruta! Quando terminar você vai precisar de ajuda pra dobrar os braços. Monster branco é obrigatório para sobreviver às remadas.' },
+      'PEITO+BICEPS':    { emoji: '🏋️💪', msg: 'Combo do visual! Peito estufado e braço inchado. O resultado aparece na hora na frente do espelho. Vai pra cima!' },
+      'COSTAS+TRICEPS':  { emoji: '🦅🔱', msg: 'Combo de quem treina sério. Costas largas e braço de ferradura. Remada pesada seguida de polia alta até a falha.' },
+      'BICEPS+TRICEPS':  { emoji: '💪🔱', msg: 'DIA DE BRAÇO COMPLETO! Termina com os braços que não fecham e a camiseta pedindo arrego. É o pump dos deuses!' },
+      'PEITO+COSTAS':    { emoji: '🏋️🦅', msg: 'O combo Arnold! Volume máximo. Se prepare para o maior pump da sua vida. Antagonistas trabalhando em sincronia.' },
+      'ABDOMEN+CARDIO':  { emoji: '🔥🏃', msg: 'Combo secador! Abdominais intensos e cardio para derreter a gordura. Discreto mas letal para o shape.' },
+      'ABDOMEN+PEITO':   { emoji: '🔥🏋️', msg: 'Foco no tronco superior. Peito pesado e core estabilizado. O V invertido começa aqui.' },
+      'ABDOMEN+COSTAS':  { emoji: '🔥🦅', msg: 'Postura e força. Costas largas e abdômen travado. A armadura do guerreiro está sendo forjada.' },
+      'ABDOMEN+BICEPS':  { emoji: '🔥💪', msg: 'Rápido e eficiente. Rasga o abdômen e incha o bíceps. Ideal para dias de correria.' },
+      'ABDOMEN+TRICEPS': { emoji: '🔥🔱', msg: 'Definição pura! Tríceps esculpido e barriga seca. O foco é na estética de alto nível.' },
+      'CARDIO+PEITO':    { emoji: '🏃🏋️', msg: 'Coração acelerado! Cardio pra aquecer e supino pra detonar. Aqueça bem os ombros.' },
+      'CARDIO+COSTAS':   { emoji: '🏃🦅', msg: 'Resistência máxima. O corpo queima enquanto as costas crescem. Coisa de atleta.' },
+      'CARDIO+BICEPS':   { emoji: '🏃💪', msg: 'Queima e define. O cardio limpa o caminho e o bíceps faz o show.' },
+      'CARDIO+TRICEPS':  { emoji: '🏃🔱', msg: 'O duo da definição extrema. Queima gordura e esculpe o braço. Sem descanso!' },
+    };
+
+    const canvas = document.getElementById('wheel-canvas');
+    const ctx = canvas.getContext('2d');
+    const N = slices.length;
+    const ARC = (2 * Math.PI) / N;
+    const SIZE = canvas.width;
+    const R = SIZE / 2;
+
+    let currentRotation = 0;
+    let isSpinning = false;
+    let spinPhase = 1;      
+    let firstResult = null; 
+    let cheatMode = null;
+
+    function drawWheel() {
+      ctx.clearRect(0, 0, SIZE, SIZE);
+      slices.forEach((slice, i) => {
+        const startAngle = i * ARC - Math.PI / 2;
+        const endAngle   = startAngle + ARC;
+
+        // Fatia
+        ctx.beginPath();
+        ctx.moveTo(R, R);
+        ctx.arc(R, R, R - 5, startAngle, endAngle);
+        ctx.closePath();
+        ctx.fillStyle = slice.color;
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(57,255,20,0.2)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Texto
+        ctx.save();
+        ctx.translate(R, R);
+        ctx.rotate(startAngle + ARC / 2);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = slice.textColor;
+        // Aumentado para melhor visibilidade no celular
+        ctx.font = `bold 22px 'Bebas Neue', sans-serif`;
+        ctx.fillText(slice.display, R - 25, 8);
+        ctx.restore();
+      });
+
+      // Borda interna neon
+      ctx.beginPath();
+      ctx.arc(R, R, R - 5, 0, 2 * Math.PI);
+      ctx.strokeStyle = 'rgba(57,255,20,0.4)';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+    }
+
+    function toggleSecretPanel() {
+      const panel = document.getElementById('secret-panel');
+      panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function applyCheat() {
+      const f = document.getElementById('cheat-first').value;
+      const s = document.getElementById('cheat-second').value;
+      if (f === s) { 
+        alert("Escolha treinos diferentes, monstro!"); 
+        return; 
+      }
+      cheatMode = { first: f, second: s };
+      toggleSecretPanel();
+      resetGame();
+      // Simula o sorteio instantâneo ou permite o giro real mas com alvo fixo
+    }
+
+    function spinToIndex(targetIndex, onDone) {
+      const sliceCenterAngle = targetIndex * ARC + ARC / 2;
+      const fullSpins = (6 + Math.floor(Math.random() * 4)) * 2 * Math.PI;
+      const finalRotation = currentRotation + fullSpins + (2 * Math.PI - sliceCenterAngle + Math.PI / 2) % (2 * Math.PI);
+
+      canvas.style.transition = 'transform 4.5s cubic-bezier(0.15, 0, 0.15, 1)';
+      canvas.style.transform  = `rotate(${finalRotation}rad)`;
+      currentRotation = finalRotation % (2 * Math.PI);
+
+      setTimeout(onDone, 4700);
+    }
+
+    function spinWheel() {
+      if (isSpinning) return;
+      isSpinning = true;
+
+      const btn = document.getElementById('btn-spin');
+      btn.disabled = true;
+
+      if (spinPhase === 1) {
+        btn.textContent = '🌀 SORTEANDO...';
         
-        <!-- Tela Inicial: Vai treinar hoje? -->
-        <div class="space-y-1">
-            <h2 class="text-lime-500 text-xl sm:text-2xl tracking-widest uppercase drop-shadow-md">Protocolo de Hoje</h2>
-            <h1 class="text-4xl sm:text-5xl md:text-6xl drop-shadow-[0_5px_5px_rgba(0,0,0,1)] text-white">
-                VAI TREINAR HOJE MEU NOBRE? 🦍
-            </h1>
-        </div>
-
-        <div class="flex flex-col sm:flex-row gap-3 w-full justify-center items-center mt-2 relative">
-            <button id="btn-sim" onclick="perguntarTreino()" 
-                class="w-full sm:w-auto px-8 py-3 bg-lime-500 hover:bg-lime-400 text-black text-2xl sm:text-3xl rounded-xl transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(132,204,22,0.8)]">
-                SIM, PAI! 💪
-            </button>
-
-            <!-- Se ele for ninja e conseguir clicar no NÃO, a função forcarTreino ativa -->
-            <button id="btn-nao" onclick="forcarTreino()"
-                class="w-full sm:w-auto px-8 py-3 bg-red-600 text-white text-2xl sm:text-3xl rounded-xl shadow-[0_0_20px_rgba(220,38,38,0.8)] cursor-not-allowed">
-                NÃO 🤡
-            </button>
-        </div>
-    </div>
-
-    <!-- Menção Honrosa no Rodapé -->
-    <div class="absolute bottom-6 w-full text-center px-4 pointer-events-none">
-        <p class="text-lime-400 text-lg sm:text-xl tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,1)] opacity-90 animate-pulse">
-            ⚡ Movido a ódio e àquele Monster branco trincando de gelado ⚡
-        </p>
-    </div>
-
-    <script>
-        const btnNao = document.getElementById('btn-nao');
-
-        // Lógica do botão fujão
-        function moverBotao(e) {
-            // Se for evento de toque, impede o clique normal para ele só fugir
-            if(e && e.type === 'touchstart') e.preventDefault();
-            
-            const windowWidth = window.innerWidth;
-            const windowHeight = window.innerHeight;
-            const btnWidth = btnNao.offsetWidth;
-            const btnHeight = btnNao.offsetHeight;
-            
-            // Limitadores para o botão não sumir da tela nem cobrir o rodapé
-            const margem = 20;
-            const rodapeSpace = 80; 
-            
-            const randomX = Math.max(margem, Math.floor(Math.random() * (windowWidth - btnWidth - margem)));
-            const randomY = Math.max(margem, Math.floor(Math.random() * (windowHeight - btnHeight - margem - rodapeSpace)));
-
-            btnNao.style.position = 'fixed';
-            btnNao.style.left = randomX + 'px';
-            btnNao.style.top = randomY + 'px';
-            btnNao.classList.remove('w-full', 'sm:w-auto');
+        let targetIdx;
+        if (cheatMode) {
+          targetIdx = slices.findIndex(s => s.label === cheatMode.first);
+        } else {
+          targetIdx = Math.floor(Math.random() * N);
         }
 
-        // Eventos para o botão fugir
-        btnNao.addEventListener('mouseover', moverBotao);
-        btnNao.addEventListener('touchstart', moverBotao, { passive: false });
+        spinToIndex(targetIdx, () => {
+          firstResult = slices[targetIdx].label;
+          isSpinning = false;
+          spinPhase = 2;
 
-        // ETAPA 2: Escolher o treino (ativado pelo botão SIM)
-        function perguntarTreino() {
-            const card = document.getElementById('main-card');
-            card.innerHTML = `
-                <div class="space-y-1 animate-fade-in">
-                    <h2 class="text-lime-500 text-xl sm:text-2xl tracking-widest uppercase drop-shadow-md">Aí Sim, Mutante!</h2>
-                    <h1 class="text-4xl sm:text-5xl drop-shadow-[0_5px_5px_rgba(0,0,0,1)] text-white">
-                        QUAL VAI SER O AMASSO DE HOJE? 🦍
-                    </h1>
-                </div>
-                <div class="flex flex-col sm:flex-row gap-3 w-full justify-center items-center mt-4">
-                    <button onclick="confirmarBiceps('superiores')" class="w-full px-6 py-3 bg-lime-500 hover:bg-lime-400 text-black text-2xl sm:text-3xl rounded-xl transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(132,204,22,0.8)]">
-                        SUPERIORES 💪
-                    </button>
-                    <button onclick="confirmarBiceps('inferiores')" class="w-full px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white text-2xl sm:text-3xl rounded-xl transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(147,51,234,0.8)]">
-                        INFERIORES 🍗
-                    </button>
-                </div>
-            `;
+          const displayMap = { 'BICEPS': 'BÍCEPS', 'TRICEPS': 'TRÍCEPS', 'PEITO': 'PEITO', 'COSTAS': 'COSTAS', 'ABDOMEN': 'ABDÔMEN', 'CARDIO': 'CARDIO' };
+          document.getElementById('badge-first').textContent = displayMap[firstResult] || firstResult;
+          document.getElementById('first-result-preview').style.display = 'flex';
+          btn.disabled = false;
+          btn.textContent = '⚡ GIRAR O 2º TREINO ⚡';
+
+          setTimeout(() => {
+            canvas.style.transition = 'none';
+            canvas.style.transform = 'rotate(0rad)';
+            currentRotation = 0;
+          }, 300);
+        });
+
+      } else {
+        btn.textContent = '🌀 FINALIZANDO...';
+        document.getElementById('first-result-preview').style.display = 'none';
+
+        let targetIdx;
+        if (cheatMode) {
+          targetIdx = slices.findIndex(s => s.label === cheatMode.second);
+        } else {
+          do {
+            targetIdx = Math.floor(Math.random() * N);
+          } while (slices[targetIdx].label === firstResult);
         }
 
-        // ETAPA 3: A Trollagem Final (Tudo vira Bíceps e Tríceps)
-        function confirmarBiceps(escolha) {
-            const card = document.getElementById('main-card');
-            
-            let mensagemIronica = "";
-            if(escolha === 'inferiores') {
-                mensagemIronica = "<span class='text-purple-400'>ACHOU QUE IA TREINAR PERNA? AQUI NINGUÉM TREINA PERNA, MEU NOBRE! 🤡</span><br><br>";
-            }
+        spinToIndex(targetIdx, () => {
+          const secondResult = slices[targetIdx].label;
+          isSpinning = false;
+          showResult(firstResult, secondResult);
+        });
+      }
+    }
 
-            card.innerHTML = `
-                <h1 class="text-4xl sm:text-5xl md:text-6xl text-lime-500 drop-shadow-[0_0_30px_rgba(132,204,22,1)] animate-pulse">
-                    TREINO DE BÍCEPS E TRÍCEPS CONFIRMADO! 🚀
-                </h1>
-                <p class="text-lg sm:text-xl md:text-2xl text-white mt-4 font-sans font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,1)] bg-black/70 p-4 sm:p-6 rounded-xl border border-lime-500/50">
-                    ${mensagemIronica}
-                    O MONSTER BRANCO JÁ BATEU E AS GÓTICAS TÃO TE ESPERANDO LÁ NO BANCO DE SUPINO! 🖤⚡
-                    <br><br>
-                    VAI LÁ E AMASSA OS PESOS! 🏋️‍♂️
-                </p>
-            `;
-        }
+    function showResult(first, second) {
+      document.getElementById('screen-roulette').style.display = 'none';
+      const screen = document.getElementById('screen-result');
+      screen.style.display = 'block';
 
-        // ETAPA ALTERNATIVA: Se ele for ninja e clicar no botão NÃO
-        function forcarTreino() {
-            const card = document.getElementById('main-card');
-            card.innerHTML = `
-                <h1 class="text-4xl sm:text-5xl md:text-6xl text-red-500 drop-shadow-[0_0_30px_rgba(220,38,38,1)] animate-pulse">
-                    OPÇÃO NEGADA! 🚫
-                </h1>
-                <p class="text-lg sm:text-xl md:text-2xl text-white mt-4 font-sans font-bold drop-shadow-[0_4px_6px_rgba(0,0,0,1)] bg-black/70 p-4 sm:p-6 rounded-xl border border-red-500/50">
-                    O SHAPE FALA MAIS ALTO QUE A TUA PREGUIÇA!
-                    <br><br>
-                    TREINO DE BÍCEPS E TRÍCEPS CONFIRMADO COM SUCESSO! 🚀 
-                    <br><br>
-                    PEGA O MONSTER BRANCO E VAI, QUE AS GÓTICAS JÁ TÃO ESPERANDO! 🖤
-                </p>
-            `;
-        }
-    </script>
+      const order = ['PEITO','COSTAS','BICEPS','TRICEPS','ABDOMEN','CARDIO'];
+      const sorted = [first, second].sort((a, b) => order.indexOf(a) - order.indexOf(b));
+      const key = sorted[0] + '+' + sorted[1];
+      const combo = combos[key] || { emoji: '💪🔥', msg: 'Treino de elite! Sem desculpas, vá e vença!' };
+
+      const displayMap = { 'BICEPS': 'BÍCEPS', 'TRICEPS': 'TRÍCEPS', 'PEITO': 'PEITO', 'COSTAS': 'COSTAS', 'ABDOMEN': 'ABDÔMEN', 'CARDIO': 'CARDIO' };
+      document.getElementById('result-emoji').textContent = combo.emoji;
+      document.getElementById('result-first').textContent  = displayMap[first]  || first;
+      document.getElementById('result-second').textContent = displayMap[second] || second;
+      document.getElementById('result-msg').textContent    = combo.msg;
+
+      document.getElementById('result-combo').classList.add('result-in');
+      cheatMode = null; // Limpa o cheat após o uso
+    }
+
+    function resetGame() {
+      document.getElementById('screen-result').style.display = 'none';
+      document.getElementById('screen-roulette').style.display = 'block';
+      document.getElementById('first-result-preview').style.display = 'none';
+      document.getElementById('result-combo').classList.remove('result-in');
+
+      const btn = document.getElementById('btn-spin');
+      btn.disabled = false;
+      btn.textContent = '⚡ GIRAR A ROLETA ⚡';
+
+      canvas.style.transition = 'none';
+      canvas.style.transform = 'rotate(0rad)';
+      currentRotation = 0;
+      spinPhase = 1;
+      firstResult = null;
+    }
+
+    // Init
+    window.onload = drawWheel;
+  </script>
 </body>
 </html>
-
-
